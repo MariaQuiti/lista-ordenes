@@ -14,6 +14,12 @@ class ProductoAdmin(admin.ModelAdmin):
 
 class DetalleAdmin(admin.ModelAdmin):
     list_display = ("orden_link", "producto_link", "cantidad", "precio", "subtotal")
+
+    exclude = ["precio"]
+
+    def save_model(self, request, obj, form, change):
+        obj.precio = obj.producto.precio
+        super().save_model(request, obj, form, change)
     
     def orden_link(self, obj):
         return obj.orden.cliente
